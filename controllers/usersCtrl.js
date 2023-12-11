@@ -1,3 +1,4 @@
+const User = require("../models/User");
 
 const getUsersPath = "/";
 const getUserNamePath = "/profile/:name";
@@ -33,25 +34,27 @@ module.exports = {
     },
     postCreateUser: async function(req,res,next){
         try {
-            const {db} = req.app.locals
             const {username,email, password} = req.body; 
-            const user = await db.collection("users").insertOne({
+            await User.create({
                 username: username, 
                 email: email, 
                 password: password
             })
+            // const user = await db.collection("users").insertOne()
             res.redirect("/users/profile/" + username)
         } catch (error) {
-            return next(err)         
+            if(error.code===11000){
+                throw new Error("duplicated key")
+            }
+            return next(error)         
         }
     },
     getAllUsers: async function(req,res,next){
         try {
-            const {db} = req.app.locals
-            const user = await db.collection("users").find().toArray()
+            const user =  await User.find()
             res.render("users/userList",{users: user})
         } catch (error) {
-            return next(err)
+            return next(error)
         }
     }
 }

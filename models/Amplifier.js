@@ -1,10 +1,13 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 const amplifierSchema = new Schema({
-    name: String,
+    name: {
+        type: String,
+        required: true,
+    },
     image: String,
     brand: { type: 'ObjectId', ref: 'Brand' },
-    power: Number,
+    power: {type: Number, enum: [230]},
     features: {
         masterVolume: Boolean,
         bass: Boolean,

@@ -3,7 +3,8 @@
 /**
  * Module dependencies.
  */
-const MongoClient = require('mongodb').MongoClient;
+
+const mongoose = require("mongoose")
 const app = require('../app');
 const debug = require('debug')('amps-hero:server');
 const http = require('http');
@@ -22,13 +23,13 @@ app.set('port', port);
 const server = http.createServer(app);
 /* database */
 
-MongoClient.connect('mongodb://localhost:27018')
-  .then(client => {
-    app.locals.db = client.db('ampshero'); // Enregistrement de la connexion dans les variables locales
-    server.listen(port); // Démarrer le serveur une fois la connexion ouverte
-  })
-  .catch(err => console.log(err))
-;
+mongoose.connect('mongodb://localhost:27018/ampshero')
+.then(() => {
+app.locals.db = mongoose.connection;
+server.listen(port); // Démarrer le serveur une fois la connexion ouverte
+})
+.catch(e => console.log(e));
+
 /**
  * Listen on provided port, on all network interfaces.
  */
