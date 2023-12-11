@@ -11,6 +11,21 @@ router.get(
 router.get(
   usersCtrl.getUserNamePath,
   usersCtrl.getUserName,
+);
+
+router.get(
+  usersCtrl.getCreateUserPath,
+  usersCtrl.getCreateUser,
+);
+
+
+router.post(
+  usersCtrl.postCreateUserPath,
+  usersCtrl.postCreateUser,
+)
+router.get(
+  usersCtrl.getAllUsersPath,
+  usersCtrl.getAllUsers,
 )
 
 module.exports = router;

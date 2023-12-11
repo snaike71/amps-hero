@@ -24,7 +24,7 @@ const server = http.createServer(app);
 
 MongoClient.connect('mongodb://localhost:27018')
   .then(client => {
-    app.locals.db = client.db('amphero'); // Enregistrement de la connexion dans les variables locales
+    app.locals.db = client.db('ampshero'); // Enregistrement de la connexion dans les variables locales
     server.listen(port); // Démarrer le serveur une fois la connexion ouverte
   })
   .catch(err => console.log(err))
