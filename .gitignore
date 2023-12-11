@@ -59,3 +59,7 @@ conf/
 
 # next.js build output
 .next
+
+# Mongo data files
+
+docker/data/

@@ -1,9 +1,16 @@
 var express = require('express');
+const usersCtrl = require('../controllers/usersCtrl');
 var router = express.Router();
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+router.get(
+  usersCtrl.getUsersPath,
+  usersCtrl.getUsers,
+);
+
+router.get(
+  usersCtrl.getUserNamePath,
+  usersCtrl.getUserName,
+)
 
 module.exports = router;
