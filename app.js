@@ -3,12 +3,18 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const OpenApi = require("express-openapi");
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
-const brandsRouter = require('./routes/brands')
+const authsRouter = require("./routes/auth");
+const brandsRouter = require('./routes/brands');
+const presetsRouter = require('./routes/presets');
+const amplifiersRouter = require('./routes/amplifiers')
+const passport = require('passport');
+const passportMiddleware = require("./middlewares/passport")();
+const User = require("./models/User");
 const app = express();
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -19,14 +25,21 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(passportMiddleware.initialize())
+passport.use(User.createStrategy());
+
+
 app.use('/', indexRouter);
+app.use("/auth",authsRouter)
 app.use('/users', usersRouter);
 app.use('/brands', brandsRouter);
-// catch 404 and forward to error handler
+app.use('/presets', presetsRouter);
+app.use('/amplifier', amplifiersRouter);
+
 app.use(function(req, res, next) {
   next(createError(404));
 });
-
+console.info(`OpenAPI documentation available in http://localhost:${3002}`)
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development

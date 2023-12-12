@@ -1,33 +1,10 @@
 const User = require("../models/User");
 
-const getUsersPath = "/";
-const getUserNamePath = "/profile/:name";
-const getCreateUser = "/create";
-const postCreateUserPath = "/";
-const getAllUsersPath = "/all";
 module.exports = {
-    getUsersPath: getUsersPath,
-    getUserNamePath: getUserNamePath,
-    getCreateUserPath: getCreateUser,
-    postCreateUserPath: postCreateUserPath,
-    getAllUsersPath: getAllUsersPath,
-    getUsers: async function (req,res,next){
-        try {
-         res.send('respond with a resource');   
-        } catch (error) {
-            return next(err)
-        }
-    },
     getUserName: async function (req,res,next){
         try {
-            res.render("users/userName",{name: req.params.name})
-        } catch (err) {
-            return next(err)
-        }
-    },
-    getCreateUser: async function (req,res,next){
-        try {
-            res.render("users/form")
+            const user = await User.findOne({username: req.params.username})
+            res.status(200).json(user)
         } catch (err) {
             return next(err)
         }
@@ -41,18 +18,16 @@ module.exports = {
                 password: password
             })
             // const user = await db.collection("users").insertOne()
-            res.redirect("/users/profile/" + username)
+            res.status(200).json(username)
         } catch (error) {
-            if(error.code===11000){
-                throw new Error("duplicated key")
-            }
-            return next(error)         
+            return next(error)      
+
         }
     },
     getAllUsers: async function(req,res,next){
         try {
             const user =  await User.find()
-            res.render("users/userList",{users: user})
+            res.statut(200).json(user)
         } catch (error) {
             return next(error)
         }

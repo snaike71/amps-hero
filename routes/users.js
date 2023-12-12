@@ -1,30 +1,24 @@
-var express = require('express');
+const express = require('express');
 const usersCtrl = require('../controllers/usersCtrl');
-var router = express.Router();
+const router = express.Router();
 
 /* GET users listing. */
-router.get(
-  usersCtrl.getUsersPath,
-  usersCtrl.getUsers,
-);
+
 
 router.get(
-  usersCtrl.getUserNamePath,
+  // #swagger.tags = ["users"]
+  "/profile/:username",
   usersCtrl.getUserName,
 );
 
-router.get(
-  usersCtrl.getCreateUserPath,
-  usersCtrl.getCreateUser,
-);
-
-
 router.post(
-  usersCtrl.postCreateUserPath,
+   // #swagger.tags = ["users"]
+  "/create",
   usersCtrl.postCreateUser,
 )
 router.get(
-  usersCtrl.getAllUsersPath,
+   // #swagger.tags = ["users"]
+  "/",
   usersCtrl.getAllUsers,
 )
 

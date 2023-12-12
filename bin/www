@@ -26,6 +26,12 @@ const server = http.createServer(app);
 mongoose.connect('mongodb://localhost:27018/ampshero')
 .then(() => {
 app.locals.db = mongoose.connection;
+
+
+server.on('error', onError);
+server.on('listening', onListening);
+
+
 server.listen(port); // Démarrer le serveur une fois la connexion ouverte
 })
 .catch(e => console.log(e));
@@ -33,10 +39,6 @@ server.listen(port); // Démarrer le serveur une fois la connexion ouverte
 /**
  * Listen on provided port, on all network interfaces.
  */
-
-
-server.on('error', onError);
-server.on('listening', onListening);
 
 /**
  * Normalize a port into a number, string, or false.
