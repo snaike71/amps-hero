@@ -7,7 +7,6 @@ const swaggerDocument = require('../swagger-output.json');
 router.use('/', swaggerUi.serve);
 router.get('/', swaggerUi.setup(swaggerDocument));
 router.get(
-    // #swagger.tags = ["index"]
     "/",
     indexCtrl.index);
 

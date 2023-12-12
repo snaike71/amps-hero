@@ -1,35 +1,54 @@
 const User = require("../models/User");
 
 module.exports = {
-    getUserName: async function (req,res,next){
+    getUser: async function (req, res, next) {
         try {
-            const user = await User.findOne({username: req.params.username})
+            const user = await User.findById(req.params.id).populate("presets")
             res.status(200).json(user)
         } catch (err) {
-            return next(err)
+            res.status(400).json(err)
         }
     },
-    postCreateUser: async function(req,res,next){
+    getAllUsers: async function (req, res, next) {
         try {
-            const {username,email, password} = req.body; 
-            await User.create({
-                username: username, 
-                email: email, 
-                password: password
-            })
-            // const user = await db.collection("users").insertOne()
-            res.status(200).json(username)
+            let { page, limit } = req.query;
+            const total = await User.countDocuments()
+            
+            page = typeof page != "number" ? 1 : parseInt(page)
+            limit = typeof limit != "number" ? 1 : parseInt(limit)
+            const user = await User.find()
+            res.statut(200).json({page,total,user})
         } catch (error) {
-            return next(error)      
+            res.status(400).json(err)
+        }
+    },
+    deleteUser: async function (req, res, next) {
+        try {
 
+            if (req.user._id !== req.params.id && req.user.role !== 'admin') {
+                res.status(402).json({ error: 'Unauthorized' });
+
+            }
+            await User.deleteOne({ _id: req.params.id })
+            res.status(204).json({ message: 'Brand successfully deleted!' })
+        } catch (error) {
+            res.status(400).json(error)
         }
     },
-    getAllUsers: async function(req,res,next){
+
+    patchUpdateUser: async function (req, res, next) {
         try {
-            const user =  await User.find()
-            res.statut(200).json(user)
+
+            if (req.user._id !== req.params.id && req.user.role !== 'admin') {
+                res.status(402).json({ error: 'Unauthorized' });
+
+            }
+            let user = await User.findById(req.params.id)
+            Object.assign(user, req.body)
+            await user.save();
+            res.status(200).json(user)
         } catch (error) {
-            return next(error)
+            res.status(400).json(e)
         }
-    }
+    },
 }

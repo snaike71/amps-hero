@@ -1,15 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const authCtrl = require('../controllers/authCtrl');
-
+const passport = require("passport")
 
 router.post(
-    // #swagger.tags = ["auth"]
     "/register",
     authCtrl.postRegister
 );
 router.post(
-    // #swagger.tags = ["auth"]
     "/login",
     authCtrl.postLogin
 );

@@ -5,7 +5,6 @@ const passport = require("passport")
 // #swagger.tags = ["brands"]
 
 router.get(
-  // #swagger.tags = ["brands"]
   // #swagger.summary = 'Get all brands'
   // #swagger.description = 'Get all brands with name and logo'
   // #swagger.parameters['page'] = { description: 'Page number (default 0)', type: 'number' }
@@ -15,27 +14,23 @@ router.get(
 );
 
 router.post(
-  // #swagger.tags = ["brands"]
   "/",
   passport.authenticate('jwt', { session: false }),
   brandsCtrl.postCreateBrand,
 )
 
 router.delete(
-  // #swagger.tags = ["brands"]
   "/:id",
   passport.authenticate('jwt', { session: false }),
   brandsCtrl.deleteBrand,
 )
 
 router.get(
-  // #swagger.tags = ["brands"]
   "/:id",
   brandsCtrl.getOneBrand,
 )
 
 router.patch(
-  // #swagger.tags = ["brands"]
   "/:id",
   passport.authenticate('jwt', { session: false }),
   brandsCtrl.patchUpdateBrand,

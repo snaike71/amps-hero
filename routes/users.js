@@ -6,18 +6,19 @@ const router = express.Router();
 
 
 router.get(
-  // #swagger.tags = ["users"]
-  "/profile/:username",
-  usersCtrl.getUserName,
+  "/profile/:id",
+  usersCtrl.getUser,
 );
 
-router.post(
-   // #swagger.tags = ["users"]
-  "/create",
-  usersCtrl.postCreateUser,
+router.delete(
+  "/:id",
+  usersCtrl.deleteUser,
+)
+router.patch(
+  "/:id",
+  usersCtrl.patchUpdateUser,
 )
 router.get(
-   // #swagger.tags = ["users"]
   "/",
   usersCtrl.getAllUsers,
 )

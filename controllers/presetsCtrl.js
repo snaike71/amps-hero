@@ -1,22 +1,29 @@
 const Preset = require("../models/Preset")
 
 
-const getAllPresetsPath = "/";
-const postCreatePresetPath = "/";
-const deletePresetPath = "/:id";
-const patchUpdatePresetPath = "/:id";
-const getOnePresetPath = "/:id";
+
 
 module.exports = {
-    getAllPresetsPath: getAllPresetsPath,
-    postCreatePresetPath: postCreatePresetPath,
-    deletePresetPath: deletePresetPath,
-    getOnePresetPath: getOnePresetPath,
-    patchUpdatePresetPath:patchUpdatePresetPath,
+   
     getAllPresets: async function(req,res,next){
         try {
-            const Presets = await Preset.find()
-            res.status(200).json(Presets)
+            let { page, limit, ampli, music } = req.query;
+            const total = await Preset.countDocuments()
+            
+            let filters = {};
+
+            if(ampli){
+                filters.amp = ampli
+            }
+            if(musique){
+                filters.musicTitle = music
+            }
+
+            page = typeof page != "number" ? 1 : parseInt(page)
+            limit = typeof limit != "number" ? 1 : parseInt(limit)
+
+            const presets = await Preset.find().populate("amp").where(filters).limit(limit).skip((page - 1) * limit)
+            res.status(200).json({page, total, presets})
         } catch (error) {
             res.status(404).json(error)
         }
@@ -31,8 +38,8 @@ module.exports = {
     },
     deletePreset: async function(req,res,next){
         try {
-            const PresetId = req.params.id
-            await Preset.deleteOne({_id: PresetId})
+            await Preset.deleteOne({_id: req.params.id})
+            res.status(204).json({ message: 'Preset successfully deleted!' })
         } catch (error) {
             res.status(404).json({ 'error': 'Can\'t find brand' });
         }

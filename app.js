@@ -10,6 +10,7 @@ const usersRouter = require('./routes/users');
 const authsRouter = require("./routes/auth");
 const brandsRouter = require('./routes/brands');
 const presetsRouter = require('./routes/presets');
+const uploadsRouter = require('./routes/uploads')
 const amplifiersRouter = require('./routes/amplifiers')
 const passport = require('passport');
 const passportMiddleware = require("./middlewares/passport")();
@@ -29,13 +30,13 @@ app.use(passportMiddleware.initialize())
 passport.use(User.createStrategy());
 
 
-app.use('/', indexRouter);
-app.use("/auth",authsRouter)
-app.use('/users', usersRouter);
-app.use('/brands', brandsRouter);
-app.use('/presets', presetsRouter);
-app.use('/amplifier', amplifiersRouter);
-
+app.use('/', indexRouter /* #swagger.ignore = true */);
+app.use("/auth",authsRouter /* #swagger.ignore = true */)
+app.use('/users', usersRouter/* #swagger.tags = ["users"]*/);
+app.use('/brands', brandsRouter /* #swagger.tags = ["brands"]*/);
+app.use('/presets', presetsRouter/* #swagger.tags = ["presets"]*/);
+app.use('/amplifiers', amplifiersRouter/* #swagger.tags = ["amplifiers"]*/);
+app.use('/uploads', uploadsRouter/* #swagger.tags = ["uploads"]*/);
 app.use(function(req, res, next) {
   next(createError(404));
 });
