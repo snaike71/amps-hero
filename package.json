@@ -10,7 +10,6 @@
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.s16.1",
-    "express-openapi": "^12.1.0",
     "express-session": "^1.17.3",
     "http-errors": "~1.6.3",
     "jsonwebtoken": "^9.0.2",
